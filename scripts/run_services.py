@@ -45,7 +45,7 @@ def get_mlflow_server_commands():
 
 if __name__ == '__main__':
 
-    #embed_proc = subprocess.Popen(get_embedding_server_commands())    
+    embed_proc = subprocess.Popen(get_embedding_server_commands())    
     chroma_proc = subprocess.Popen(get_chroma_db_commands())
     mlflow_proc = subprocess.Popen(get_mlflow_server_commands())
 
@@ -55,6 +55,6 @@ if __name__ == '__main__':
             time.sleep(10)
     except KeyboardInterrupt:
         print("Shutting down servers...")
-        #embed_proc.terminate()
+        embed_proc.terminate()
         chroma_proc.terminate()
         mlflow_proc.terminate()
