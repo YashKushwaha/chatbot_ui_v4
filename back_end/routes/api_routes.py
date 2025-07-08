@@ -20,7 +20,5 @@ async def retriever(request: Request, message: str = Form(...), image: UploadFil
     embeddings = embed_model.get_query_embedding(message)
     vec_store_query = VectorStoreQuery(query_embedding = embeddings[0], similarity_top_k = 5)
     results = vec_store.query(query = vec_store_query)
-    response_stream = 'ABCD'
-    print('NODES')
-    print(results)
+    response_stream = '\n'.join([i.text for i in results.nodes])
     return StreamingResponse(response_stream, media_type="text/plain")
