@@ -21,6 +21,20 @@ def get_chroma_db_client():
         port=int(CHROMA_DB_PORT))
     return client
 
+def get_batches_from_collection(collection, batch_size=100):
+    cursor = collection.find().batch_size(batch_size)
+    batch = []
+    
+    for doc in cursor:
+        batch.append(doc)
+        if len(batch) == batch_size:
+            yield batch
+            batch = []
+    
+    if batch:
+        yield batch  # Yield any remaining documents
+
+
 
 class FLICKR:
     def __init__(self, dataset_split):
@@ -71,7 +85,28 @@ def upload_data_to_mongo_db(dataset):
         if counter % (10*batch_size) == 0:
             print(counter, end='\t')
 
+def add_captions_to_vec_db(mongo_db_collection, embed_model):
+    vec_db_client = get_chroma_db_client()
+    
+    images_collection = vec_db_client.get_or_create_collection('captions')
+    batch_size = 64
+    print('Done with records:')
 
+    counter = 0
+    for batch in get_batches_from_collection(mongo_db_collection, batch_size=batch_size):
+        captions = [i['caption'] for i in batch]
+        
+        embeddings = embed_model.encode_text(captions)
+        documents = [i['filename'] for i in batch]
+        ids = [i['sent_id'] for i in batch]
+        
+        metadatas = [dict(filename = i['filename'], img_id = i['img_id']) for i in batch]
+        to_upload = dict(documents=captions, embeddings=embeddings, ids=ids, metadatas=metadatas)
+        images_collection.add(**to_upload)
+        
+        counter+=batch_size
+        if counter % (10*batch_size) == 0:
+            print(counter, end='\t')
 
 def download_flickr30k_dataset(dataset_name, download_location=None):
     dataset = load_dataset(dataset_name, cache_dir=download_location)
@@ -99,7 +134,7 @@ def upload_data_to_chroma_db(dataset, embed_model):
     batch_size = 64
     counter = 0
     for batch in iterator.batch(batch_size=batch_size):
-        images = [i['image'] for i in batch]
+        images = [i['caption'] for i in batch]
         
         embeddings = embed_model.encode_image(images)
         documents = [i['filename'] for i in batch]
@@ -150,14 +185,19 @@ if __name__ == '__main__':
     DATASET_NAME = "nlphuji/flickr30k"
     dataset = download_flickr30k_dataset(dataset_name = DATASET_NAME, download_location = CACHE_DIR)
     dataset = dataset['test']
-    create_dataset_summary(dataset, dataset_name = DATASET_NAME, download_location = CACHE_DIR)  
+    #create_dataset_summary(dataset, dataset_name = DATASET_NAME, download_location = CACHE_DIR)  
 
-    image_folder_location = os.path.join(CACHE_DIR, 'images')
-
-    image_store = ImageStore(image_folder_location)
-    image_store.create_image_dataset(dataset)
+    #image_folder_location = os.path.join(CACHE_DIR, 'images')
+    #image_store = ImageStore(image_folder_location)
+    #image_store.create_image_dataset(dataset)
       
-    upload_data_to_mongo_db(dataset)
+    #upload_data_to_mongo_db(dataset)
     embed_model = OpenCLIPEmbedder(device='cuda')
-    upload_data_to_chroma_db(dataset = dataset['test'], embed_model=embed_model)
+    #upload_data_to_chroma_db(dataset = dataset['test'], embed_model=embed_model)
+
+    mongo_db_client = get_mongo_db_client()    
+    database = mongo_db_client['chatbot_ui_v4']  
+    mongo_db_collection = database['caption']
+
+    add_captions_to_vec_db(mongo_db_collection, embed_model)
 

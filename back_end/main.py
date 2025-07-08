@@ -13,8 +13,8 @@ import asyncio
 
 from pathlib import Path
 
-from back_end.config_settings import *
-from constants import EXPERIMENT_NAME, MLFLOW_LOGS_FOLDER
+from back_end.config_settings import PROJECT_ROOT, STATIC_DIR, IMAGES_DIR
+from constants import MLFLOW_LOGS_FOLDER
 
 from back_end.routes import ui_routes, debug_routes, api_routes, db_routes, vec_db_routes, mlflow_routes
 '''
@@ -25,12 +25,14 @@ from src.components import get_ollama_llm, get_mongo_db_client, get_chroma_db_cl
 
 from src.embedding_client import RemoteEmbedding
 from src.image_retriever import ImageRetriever
-
+from src.image_store import ImageStore
 from src.mlflow_utils import MLflowLogs
 
 import mlflow
 
 EXPERIMENT_NAME = 'Multimodal Retrieval'
+IMAGES_FOLDER = os.path.join(PROJECT_ROOT, 'local_only', 'data', 'images')
+
 
 mlflow.set_tracking_uri(MLFLOW_LOGS_FOLDER)
 mlflow.set_experiment(EXPERIMENT_NAME)
@@ -67,6 +69,8 @@ app.state.mongo_db_client = mongo_db_client
 app.state.vec_db_client = vec_db_client
 app.state.experiment_name = EXPERIMENT_NAME
 app.state.mlflow_handler = mlflow_handler
+
+app.state.image_manager = ImageStore(IMAGES_FOLDER)
 
 app.include_router(ui_routes.router)
 app.include_router(debug_routes.router) 

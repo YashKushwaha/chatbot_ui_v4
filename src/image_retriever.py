@@ -16,19 +16,6 @@ class ImageRetriever(BaseRetriever):
         else:
             embedding = self.embed_model.embed_image(query)  # query should be image path or tensor
 
-        # Perform similarity search on the vector store
-        #results = self.vec_store.query(embedding, top_k=self.similarity_top_k)
-        results = self.vec_store.query(embedding, similarity_top_k=self.similarity_top_k)
- 
+        results = self.vec_store.query(embedding, similarity_top_k=self.similarity_top_k) 
 
         return results
-        """
-        print()
-
-        # Wrap each result in NodeWithScore
-        nodes_with_score = [
-            NodeWithScore(node=result.node, score=result.score)
-            for result in results
-        ]
-        return nodes_with_score
-        """
