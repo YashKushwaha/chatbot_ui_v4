@@ -29,7 +29,9 @@ dependencies = [
     "protobuf (==3.20.3)",
     "ipywidgets (>=8.1.7,<9.0.0)",
     "pymongo (>=4.13.2,<5.0.0)",
-    "open-clip-torch (>=2.32.0,<3.0.0)"
+    "open-clip-torch (>=2.32.0,<3.0.0)",
+    "keybert (>=0.9.0,<0.10.0)",
+    "hdbscan (>=0.8.40,<0.9.0)"
 ]
 [tool.poetry]
 package-mode = false
