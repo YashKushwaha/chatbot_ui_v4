@@ -1,0 +1,12 @@
+pre, code {
+    white-space: pre-wrap;  /* Allows wrapping of long lines */
+    word-break: break-word; /* Break long words if necessary */
+    overflow-wrap: anywhere; /* Additional safeguard for long strings */
+    width: 800px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.main-display {
+    width:800px;
+
+}

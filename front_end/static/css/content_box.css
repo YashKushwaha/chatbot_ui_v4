@@ -1,0 +1,140 @@
+.top-bar {
+  position: absolute;
+  flex: 0 0 auto;
+  height: 5%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0); /* semi-transparent */
+}
+.scrollable-content {
+  flex: 1; /* This fills remaining space */
+  overflow-y: auto;
+  /*border: 1px solid #f7f7f7; */
+  width: 100%;
+  margin: 0 auto;
+}
+
+.chat-history-wrapper {
+    width: 80%;
+    position: relative;
+    margin: 0 auto;
+}
+
+/* fixed-height footer area */
+.form-div {
+  height: 100px; /* Fixed container height */
+  position: relative;
+  background: transparent;
+  z-index: 2; /* Important: bring it above scrollable-content if needed */
+  overflow: visible; /* allow inner to "spill" */
+  width: 80%;
+}
+
+.form-inner {
+
+  width: 100%;
+  margin: 0 auto;
+  position: absolute;
+  bottom: 0;
+
+  left: 10%;
+  transform: translateX(0%);
+
+  height: 100px;
+  overflow: visible; /* allow inner to "spill"   overflow-y: auto; */
+ 
+}
+
+#user-input-div  {
+  width: 100%;
+  height: 70px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid rgba(255, 255, 255, 0);
+  background-color: var(--user-input-div-color);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+
+#control-buttons {
+  width: 100%;
+  padding: 0rem;
+  outline: none;
+  height: 25px;
+  overflow-y: auto;
+}
+
+.user-message {
+  max-width: 60%;
+  width: fit-content;
+  padding: 0.5rem;
+  background-color: var(--chat-box-bg-color);
+  margin-bottom: 0.25rem;
+  margin-left: auto;  /* Align right */
+  border-radius: 1rem;
+  word-wrap: break-word;
+}
+
+.server-message {
+    max-width: 100%;
+    height: fit-content;
+    margin-bottom: 0.25rem;
+    padding: 0.05rem 0.1rem;
+
+    border-radius: 1rem;
+    background-color: var(--chat-box-bg-color-server);
+}
+
+.server-message code{
+    /*background-color: #0d0d0f; */
+    border-radius: 6px;
+    }
+
+.server-message pre{
+    /*
+    background-color: #0d0d0f;
+    */
+    border-radius: 6px;
+    }
+
+
+.server-message-sssss pre code {
+  background-color: #a0a59f;
+  color: #0c0000;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 6px;
+  display: block;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  font-family: 'Courier New', monospace;
+}
+
+
+/* Code block 
+.server-message pre {
+  background-color: #1e1e1e;
+  color: #f8f8f2;
+  padding: 1rem;
+  overflow-x: auto;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+.server-message pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: 0.95em;
+  font-family: Consolas, Monaco, monospace;
+}
+*/
+/* Optional custom code style 
+.custom-code-style {
+  background-color: #1e1e1e;
+  color: #f8f8f2;
+  padding: 1rem;
+  border-radius: 6px;
+  font-family: Consolas, monospace;
+  overflow-x: auto;
+}
+  */

@@ -1,0 +1,107 @@
+.collections-list {
+    width:200px;    
+}
+
+.record-display {
+    width:200px;    
+}
+
+.list-item-container {
+    width: 250px;
+    overflow-y: auto;
+}
+
+.list-item-container::-webkit-scrollbar {
+    width: 8px;
+    position: absolute;
+}
+
+.list-item-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 4px;
+}
+
+
+.record-display {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Example fixed height */
+    width: 250px;
+    overflow: hidden;
+}
+
+
+.separator {
+    width: 2px;
+    height:100%;
+    background-color: #999;
+    margin-left: 4px ;
+    margin-right: 4px ;
+}
+
+.list-item {
+    padding: 8px 12px;
+    margin: 5px 0;
+    /*border: 1px solid #ccc; */
+    background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 4px;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+
+
+.record-content {
+    overflow-y: auto;
+}
+
+.record-value-counts {
+    padding: 8px 12px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 4px;
+    width: 100%;
+    overflow-y: auto;
+    min-height: 0%;
+    max-height: 100%;
+}
+
+.list-item:hover {
+    background-color: #007BFF;
+}
+
+.list-item.active {
+    background-color: #007BFF;
+    color: white;
+    border-color: #0056b3;
+}
+
+.collection-button {
+    padding: 8px 12px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.collection-button.active {
+    background-color: #007BFF;
+    color: white;
+    border-color: #0056b3;
+}
+
+pre, code {
+    white-space: pre-wrap;  /* Allows wrapping of long lines */
+    word-break: break-word; /* Break long words if necessary */
+    overflow-wrap: anywhere; /* Additional safeguard for long strings */
+    width: 400px;
+    background-color: rgba(0, 0, 0, 0.5);
+}

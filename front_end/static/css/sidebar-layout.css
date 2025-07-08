@@ -1,0 +1,15 @@
+.sidebar-new-chat {
+    background-color:var(--gray1);
+    height: 10%;
+}
+
+.sidebar-chat-history {
+    background-color:var(--gray1);
+    height: 70%;
+    /*flex:1; */
+}
+
+.sidebar-bottom-section {
+    background-color:var(--gray1);
+    height: 20%;
+}

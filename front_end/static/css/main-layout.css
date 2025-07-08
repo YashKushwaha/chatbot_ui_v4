@@ -1,0 +1,95 @@
+/* Reset box sizing for consistency 
+
+@import url("../css-others/db.css");
+*/
+:root {
+
+  --black : #222222;
+  --gray1: #272727;
+  --gray400: #333333;
+  --text-color: white;
+
+  --background-color: var(--gray400);
+
+  --chat-box-bg-color:var(--gray1); 
+  --chat-box-bg-color-server:transparent; 
+  --layout-content-color: transparent;  
+  --sidebar-color: var(--black);
+  --user-input-div-color: var(--gray1)
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  overflow: hidden; /* Prevent page from scrolling */
+}
+
+/* Default (light mode) */
+body {
+  background: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Outer layout */
+.app-layout {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.layout-sidebar {
+  width: 200px;
+  background-color: var(--sidebar-color); /* Slate-800 */
+  color: var(--text-color);
+  padding: 0.1rem;
+  flex-shrink: 0; /* Prevent shrinking */
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+/* .content is a flex item inside .layout AND a flex container itself */
+.layout-content {
+  flex: 1; /* <-- behave as flex item */
+  display: flex; /* <-- behave as flex container */
+  flex-direction: column;
+  background-color: var(--layout-content-color);
+  padding: 0.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    box-shadow: none;
+  }
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Scrollbar Thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background-color: var(--gray1);  /* Use your theme variable */
+  border-radius: 6px;
+}
+
+/* Scrollbar Track Background */
+::-webkit-scrollbar-track {
+  background-color: var(--background-color);
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <link rel="stylesheet" href="static/css/main-layout.css" />
+  <link rel="stylesheet" href="static/css/content_box.css" />
+  <link rel="stylesheet" href="static/css/sidebar-layout.css" />
+    <!-- KaTeX CSS and JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <div class="layout-sidebar">{% include "components/sidebar.html" %}</div>
+    <div class="layout-content">{% include "components/content.html" %}</div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"></script>
+  <script src="static/js/script.js"></script>
+  <script> window.CHAT_ENDPOINT = "{{ chat_endpoint }}";
+</script>
+</body>
+</html>

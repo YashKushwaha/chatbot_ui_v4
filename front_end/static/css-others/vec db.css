@@ -1,0 +1,62 @@
+.db-list {
+    width:0;    
+}
+
+.collections-list {
+    width:200px; 
+   
+}
+
+.record-display {
+    width:500px;    
+}
+
+.separator {
+    width: 2px;
+    height:100%;
+    background-color: #999;
+}
+
+.db-button {
+    padding: 8px 12px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 4px;
+    width: 95%;
+}
+
+.db-button:hover {
+    background-color: #ddd;
+}
+
+.db-button.active {
+    background-color: #007BFF;
+    color: white;
+    border-color: #0056b3;
+}
+
+.collection-button {
+    padding: 8px 12px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.collection-button.active {
+    background-color: #007BFF;
+    color: white;
+    border-color: #0056b3;
+}
+
+pre, code {
+    white-space: pre-wrap;  /* Allows wrapping of long lines */
+    word-break: break-word; /* Break long words if necessary */
+    overflow-wrap: anywhere; /* Additional safeguard for long strings */
+}

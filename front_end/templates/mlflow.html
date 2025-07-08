@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="static/css/main-layout.css" />
+  <link rel="stylesheet" href="static/css-others/db.css" />
+    <link rel="stylesheet" href="static/css-others/mlflow.css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+
+</head>
+<body>
+    <div>MLFLOW SUMMARY</div>
+    <div class="app-layout">
+        <div id="experiment-list" class="list-item-container"></div>
+        <div class="separator"></div>
+        <div id="collections-list" class="list-item-container">Collections</div>
+        <div class="separator"></div>
+
+        <div id="record-display" class="main-display">
+            <div id="record-count" class="list-item"></div>
+            <div id="record-value-counts" class="main-display"></div>            
+        </div>
+        <div class="separator"></div>
+        <div id="record-content" class="record-content"></div>
+    </div>
+<script src="static/js/mlflow.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</body>
+</html>
