@@ -20,18 +20,6 @@ This is my 4th project exploring the use of llama index for LLM applications. In
   - `images` for storing embeddings of images
   - `captions` for storing captions 
 
-**Retrieval Pipeline**
-
-To test the retrieval pipeline end to end, it has been connected to front end and is available at the endpoint `/retriever`
-- User query is taken from front end and passed to the back end function
-- The back end FastAPI function, accessed the vector store & embedding model, converts the user query into embedding and performs query operation on vector store
-- By default, vector store returns top 5 results. File name of the image is stored in the nodes.
-- File name is extracted from the nodes and coverted to text
-- The front end already has the capability to render markdown thus instead of sending the filename, an url to the image is returned
-- Custom endpoint has been implemented to return files/images stored locally through URL
-
-▶ [Click here to watch the demo video](https://private-user-images.githubusercontent.com/37941798/463746725-1b928d46-27c8-445f-8d9e-9027f78b2f58.mp4?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTE5ODY0NDksIm5iZiI6MTc1MTk4NjE0OSwicGF0aCI6Ii8zNzk0MTc5OC80NjM3NDY3MjUtMWI5MjhkNDYtMjdjOC00NDVmLThkOWUtOTAyN2Y3OGIyZjU4Lm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzA4VDE0NDkwOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTMzNmU5NWM5MmMxOTI1MzIwNDBkODU2YmM3ODE3Y2NjMGRmZjZlZjkyM2U2NjdhOTJhMWExOTZmODA4MTQwMTYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.tSupL52os0vSoRf-swFDQ0TrhewVSLBpsJjPCOxMJbA)
-
 **Mongodb Database**
 
 - Used to store captions and filenames
@@ -52,3 +40,16 @@ To test the retrieval pipeline end to end, it has been connected to front end an
  'img_id': '0',
  'filename': '1000092795.jpg'}
  ```
+---
+### Retrieval Pipeline
+
+To test the retrieval pipeline end to end, it has been connected to front end and is available at the endpoint `/retriever`
+- User query is taken from front end and passed to the back end function
+- The back end FastAPI function, accessed the vector store & embedding model, converts the user query into embedding and performs query operation on vector store
+- By default, vector store returns top 5 results. File name of the image is stored in the nodes.
+- File name is extracted from the nodes and coverted to text
+- The front end already has the capability to render markdown thus instead of sending the filename, an url to the image is returned
+- Custom endpoint has been implemented to return files/images stored locally through URL
+
+▶ [Click here to watch the demo video](https://private-user-images.githubusercontent.com/37941798/463746725-1b928d46-27c8-445f-8d9e-9027f78b2f58.mp4?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTE5ODY0NDksIm5iZiI6MTc1MTk4NjE0OSwicGF0aCI6Ii8zNzk0MTc5OC80NjM3NDY3MjUtMWI5MjhkNDYtMjdjOC00NDVmLThkOWUtOTAyN2Y3OGIyZjU4Lm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzA4VDE0NDkwOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTMzNmU5NWM5MmMxOTI1MzIwNDBkODU2YmM3ODE3Y2NjMGRmZjZlZjkyM2U2NjdhOTJhMWExOTZmODA4MTQwMTYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.tSupL52os0vSoRf-swFDQ0TrhewVSLBpsJjPCOxMJbA)
+
