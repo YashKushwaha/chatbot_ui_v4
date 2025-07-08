@@ -50,5 +50,5 @@ To test the retrieval pipeline end to end, it has been connected to front end an
 - File name is extracted from the nodes and coverted to text
 - The front end already has the capability to render markdown thus instead of sending the filename, an url to the image is returned
 - Custom endpoint has been implemented to return files/images stored locally through URL
-- Link to demo video given below:
-[![Watch Demo](https://img.youtube.com/vi/XOft0mfv8bo/0.jpg)](https://youtu.be/Sk9ZbGdT8Mg)
+
+[![Watch Demo](https://img.youtube.com/vi/XOft0mfv8bo/0.jpg)](https://youtu.be/XOft0mfv8bo)
