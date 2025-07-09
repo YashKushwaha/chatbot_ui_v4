@@ -133,11 +133,12 @@ async function handleUserInput(e) {
     inputDiv.innerText = "";
     if (!message) return;
     
-    appendUserMessage(message, chatHistory, pastedImageFile);    
+    appendUserMessage(message, chatHistory, pastedImageFile);  
+    const previewContainer = document.getElementById("imagePreviewContainer");
+    previewContainer.innerHTML = ""; // clear previous  
     await sendMessageToBackendStream(message, pastedImageFile, chatHistory);
     pastedImageFile = null;
-    const previewContainer = document.getElementById("imagePreviewContainer");
-    previewContainer.innerHTML = ""; // clear previous
+
   }
 }
 

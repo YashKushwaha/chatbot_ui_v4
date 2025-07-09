@@ -50,5 +50,19 @@ To test the retrieval pipeline end to end, it has been connected to front end an
 - File name is extracted from the nodes and coverted to text
 - The front end already has the capability to render markdown thus instead of sending the filename, an url to the image is returned
 - Custom endpoint has been implemented to return files/images stored locally through URL
+- Demo video can be seen on the link give below:
 
 [![Watch Demo](https://img.youtube.com/vi/XOft0mfv8bo/0.jpg)](https://youtu.be/XOft0mfv8bo)
+
+
+### LLM Vision Integration
+
+- To build full fledged multi modal rag application we need to integrate our retrieval pipeline with LLM that has vision capability
+- I have selected `gemma3` model with [12 billion parameters](https://ollama.com/library/gemma3:12b) for this project
+- `llama-index` does support multi modal LLms like OpenAI ([see example here](https://docs.llamaindex.ai/en/stable/examples/multi_modal/openai_multi_modal/)), Anthropic ([see example here](https://docs.llamaindex.ai/en/stable/examples/multi_modal/anthropic_multi_modal/)) but this feature is not available for all LLMs
+- For this project, I have created custom LLM class to work with `gemma3` model
+**Testing the LLM**
+- To evaluate the LLM for image reasoning, apart from running the model as a script, it was also integrated with a UI where user can paste image and ask question
+- A video demo of image reasoning using `gemma` can be seen on the follwing link
+
+ [![Watch Demo](https://img.youtube.com/vi/ZQtXqu9Fboo/0.jpg) ](https://youtu.be/ZQtXqu9Fboo)
