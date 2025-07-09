@@ -4,12 +4,31 @@ function scrollToBottom(scrollContainer) {
 }
 
 // Utility: Create and append a user message
-function appendUserMessage(message, chatHistory) {
-  const newMsg = document.createElement("div");
-  newMsg.className = "user-message";
-  newMsg.innerHTML = message.replace(/\n/g, "<br>");
-  chatHistory.appendChild(newMsg);
+function appendUserMessage(message, chatHistory, imageFile = null) {
+  // --- Text Message ---
+  if (message && message.trim() !== "") {
+    const textDiv = document.createElement("div");
+    textDiv.className = "user-message";
+    textDiv.innerHTML = message.replace(/\n/g, "<br>");
+    chatHistory.appendChild(textDiv);
+  }
+  if (imageFile) {
+    const imageDiv = document.createElement("div");
+    imageDiv.className = "user-message";
+
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(imageFile);
+    img.style.maxWidth = "200px";  // adjust as needed
+    img.style.borderRadius = "8px";
+    img.alt = "User uploaded image";
+
+    imageDiv.appendChild(img);
+    chatHistory.appendChild(imageDiv);
+  }
+
 }
+
+
 function appendServerMessage(markdownText, chatHistory) {
   const replyMsg = document.createElement("div");
   replyMsg.className = "server-message";
@@ -114,7 +133,7 @@ async function handleUserInput(e) {
     inputDiv.innerText = "";
     if (!message) return;
     
-    appendUserMessage(message, chatHistory);    
+    appendUserMessage(message, chatHistory, pastedImageFile);    
     await sendMessageToBackendStream(message, pastedImageFile, chatHistory);
     pastedImageFile = null;
   }
