@@ -69,7 +69,7 @@ async function sendMessageToBackend(message) {
 async function sendMessageToBackendStream(message, pastedImageFile, chatHistory) {
   const formData = new FormData();
   formData.append("message", message);
-  console.log('pastedImageFile', pastedImageFile);
+
   if (pastedImageFile) {
     console.log('Image added to form data');
     formData.append("image", pastedImageFile);
@@ -136,7 +136,32 @@ async function handleUserInput(e) {
     appendUserMessage(message, chatHistory, pastedImageFile);    
     await sendMessageToBackendStream(message, pastedImageFile, chatHistory);
     pastedImageFile = null;
+    const previewContainer = document.getElementById("imagePreviewContainer");
+    previewContainer.innerHTML = ""; // clear previous
   }
+}
+
+function showImagePreview(file) {
+  const previewContainer = document.getElementById("imagePreviewContainer");
+  console.log('Image preview container selected')
+  previewContainer.innerHTML = ""; // clear previous
+
+  const img = document.createElement("img");
+  img.src = URL.createObjectURL(file);
+  img.style.maxWidth = "120px";
+  img.style.borderRadius = "6px";
+  img.style.marginTop = "8px";
+
+  const removeBtn = document.createElement("span");
+  removeBtn.innerHTML = "&times;";
+  removeBtn.className = "remove-btn";
+  removeBtn.onclick = () => {
+    pastedImageFile = null;
+    previewContainer.innerHTML = "";
+  };
+
+  previewContainer.appendChild(img);
+  previewContainer.appendChild(removeBtn);
 }
 
 async function handleImagePaste(e) {
@@ -145,18 +170,13 @@ async function handleImagePaste(e) {
 
   for (const item of items) {
     if (item.type.startsWith("image/")) {
-      e.preventDefault(); // Stop browser from inserting <img src="file:///...">
+      e.preventDefault(); 
       const blob = item.getAsFile();
       if (blob) {
         pastedImageFile = blob;
-
         // Optional: Show a preview of the pasted image
-        const img = document.createElement("img");
-        img.src = URL.createObjectURL(blob);
-        img.style.maxWidth = "200px";
-        inputDiv.appendChild(img);
+        showImagePreview(blob);
 
-        console.log("Pasted image captured and previewed:", blob);
       }
     }
   }
