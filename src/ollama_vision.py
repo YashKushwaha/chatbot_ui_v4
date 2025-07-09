@@ -8,7 +8,10 @@ import json
 import os
 import requests
 import base64
+#from fastapi import UploadFile
+from starlette.datastructures import UploadFile
 
+from typing import Union
 from urllib.parse import urlparse
 
 class OllamaVisionLLM(CustomLLM):
@@ -22,32 +25,16 @@ class OllamaVisionLLM(CustomLLM):
             is_chat_model=False,
             is_function_calling_model=False,
         )
-    """
-    def _encode_image(self, image_source):
-        # Determine if it's a URL
-        if self._is_url(image_source):
-            response = requests.get(image_source)
-            if response.status_code == 200:
-                return base64.b64encode(response.content).decode("utf-8")
-            else:
-                raise Exception(f"Failed to fetch image from URL: {image_source} — {response.status_code}")
-        elif isinstance(image_source, bytes):
-            return base64.b64encode(image_source).decode("utf-8")
-        else:
-            # Assume it's a local file path
-            if not os.path.exists(image_source):
-                raise FileNotFoundError(f"Local image not found: {image_source}")
-            with open(image_source, "rb") as f:
-                return base64.b64encode(f.read()).decode("utf-8")
-    """
-    def stream_complete(self, prompt: str, image_source: str, **kwargs) -> CompletionResponseGen:
-        encoded_image = self._encode_image(image_source)
+
+    def stream_complete(self, prompt: str, image_source: str = None, **kwargs) -> CompletionResponseGen:       
 
         payload = {
             "model": self.model_name,
             "prompt": prompt,
-            "images": [encoded_image]
         }
+        if image_source:
+            #encoded_image = self._encode_image(image_source)
+            payload['images'] = [image_source]
 
         headers = {"Content-Type": "application/json"}
         response = requests.post(
@@ -91,33 +78,60 @@ class OllamaVisionLLM(CustomLLM):
     def _is_url(self, path_or_url: str) -> bool:
         parsed = urlparse(path_or_url)
         return parsed.scheme in ("http", "https")
-    
-    def _encode_image(self, image_source: str) -> str:
-        parsed = urlparse(image_source)
-        if parsed.scheme in ("http", "https"):
-            response = requests.get(image_source)
-            if response.status_code == 200:
-                return base64.b64encode(response.content).decode("utf-8")
-            raise Exception(f"Failed to fetch image from URL: {response.status_code}")
-        elif isinstance(image_source, bytes):
-            return base64.b64encode(image_source).decode("utf-8")
+    '''
+    def _encode_image(self, image_source: Union[str, UploadFile]) -> str:
+        """
+        Convert a FastAPI UploadFile, local path, or URL into a base64‑encoded string.
 
-        else:
-            if not os.path.exists(image_source):
-                raise FileNotFoundError(f"Image not found: {image_source}")
+        Raises:
+            FileNotFoundError: bad local path
+            ValueError: empty UploadFile or unknown scheme
+            Exception: HTTP error on URL fetch
+        """
+        # ---- 1) FastAPI UploadFile --------------------------------------------
+        if isinstance(image_source, UploadFile):
+            # read() consumes the stream; remember to rewind if you need it again
+            image_bytes = image_source.file.read()
+            if not image_bytes:
+                raise ValueError("UploadFile is empty")
+            # optional: image_source.file.seek(0)  # rewind for future use
+            return base64.b64encode(image_bytes).decode("utf-8")
+
+        # ---- 2) str – could be URL or local path ------------------------------
+        if not isinstance(image_source, str):
+            raise ValueError("image_source must be str or UploadFile")
+
+        parsed = urlparse(image_source)
+
+        # 2a) Remote URL
+        if parsed.scheme in ("http", "https"):
+            resp = requests.get(image_source, timeout=10)
+            if resp.status_code != 200:
+                raise Exception(f"Failed to fetch image: HTTP {resp.status_code}")
+            return base64.b64encode(resp.content).decode("utf-8")
+
+        # 2b) Local file path
+        if os.path.exists(image_source):
             with open(image_source, "rb") as f:
                 return base64.b64encode(f.read()).decode("utf-8")
-    
+
+        # 2c) Anything else is unsupported
+        raise FileNotFoundError(f"Image not found or unsupported path: {image_source}")
+        '''
+
+def get_image(url):
+    response = requests.get(url, timeout=10)
+    response.raise_for_status()
+    return base64.b64encode(response.content).decode("utf-8")
 
 if __name__ == '__main__':
     model_name = 'gemma3:12b'
     llm = OllamaVisionLLM(model_name=model_name)
     image_url = 'http://localhost:8000/get_image?filename=65567.jpg'
     query = 'Can you describe this image ?'
-    #output = llm.complete(prompt=query, image_source=image_url)
-    #print(output)
 
-        # Stream response
+    image_source = get_image(image_url)
+
     response_gen = llm.stream_complete(prompt=query, image_source=image_url)
 
     final_response = ""
@@ -125,5 +139,6 @@ if __name__ == '__main__':
         print(chunk.delta, end="", flush=True)  # Print tokens as they stream
         final_response += chunk.delta
 
-    print("\n\nFull response:")
-    print(final_response)
+    print()
+    #print("\n\nFull response:")
+    #print(final_response)

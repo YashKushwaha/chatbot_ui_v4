@@ -47,9 +47,14 @@ async function sendMessageToBackend(message) {
   }
 }
 
-async function sendMessageToBackendStream(message, chatHistory) {
+async function sendMessageToBackendStream(message, pastedImageFile, chatHistory) {
   const formData = new FormData();
   formData.append("message", message);
+  console.log('pastedImageFile', pastedImageFile);
+  if (pastedImageFile) {
+    console.log('Image added to form data');
+    formData.append("image", pastedImageFile);
+  }
 
   try {
     const response = await fetch(window.CHAT_ENDPOINT, {
@@ -110,13 +115,37 @@ async function handleUserInput(e) {
     if (!message) return;
     
     appendUserMessage(message, chatHistory);    
-    await sendMessageToBackendStream(message, chatHistory);
-    
+    await sendMessageToBackendStream(message, pastedImageFile, chatHistory);
+    pastedImageFile = null;
   }
 }
 
+async function handleImagePaste(e) {
+  const items = e.clipboardData?.items;
+  if (!items) return;
+
+  for (const item of items) {
+    if (item.type.startsWith("image/")) {
+      e.preventDefault(); // Stop browser from inserting <img src="file:///...">
+      const blob = item.getAsFile();
+      if (blob) {
+        pastedImageFile = blob;
+
+        // Optional: Show a preview of the pasted image
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(blob);
+        img.style.maxWidth = "200px";
+        inputDiv.appendChild(img);
+
+        console.log("Pasted image captured and previewed:", blob);
+      }
+    }
+  }
+};
 const inputDiv = document.getElementById("user-input-div");
 const chatHistory = document.getElementById("chat-history");
 const scrollContainer = document.getElementById("chat-history-container");
+let pastedImageFile = null;  // global reference
 
 inputDiv.addEventListener("keydown", handleUserInput);
+inputDiv.addEventListener("paste", handleImagePaste);
