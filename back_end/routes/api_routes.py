@@ -23,6 +23,15 @@ async def chat_bot(request: Request, message: str = Form(...), image: UploadFile
     response_stream = stream_llm_response(request.app.state.llm, message)
     return StreamingResponse(response_stream, media_type="text/plain")
 
+@router.post("/vision")
+async def vision(request: Request, message: str = Form(...), image: UploadFile = File(None)):
+    response_stream = message
+    if image:
+        print('image -> ', image)
+    #response_stream = stream_llm_response(request.app.state.llm, message)
+    return StreamingResponse(response_stream, media_type="text/plain")
+
+
 @router.post("/retriever")
 async def retriever(request: Request, message: str = Form(...), image: UploadFile = File(None)):
     vec_store = request.app.state.vec_store

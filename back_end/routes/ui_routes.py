@@ -14,6 +14,13 @@ def root(request: Request):
         "chat_endpoint": "/echo"
     })
 
+@router.get("/vision", response_class=HTMLResponse)
+def root(request: Request):
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "chat_endpoint": "/vision"
+    })
+
 @router.get("/get_image")
 async def get_image(request: Request, filename: str):
     image_manager = request.app.state.image_manager

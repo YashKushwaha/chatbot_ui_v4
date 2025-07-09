@@ -27,7 +27,7 @@ from src.image_retriever import ImageRetriever
 from src.image_store import ImageStore
 from src.mlflow_utils import MLflowLogs
 from src.aws_bedrock import get_bedrock_llm
-
+from src.ollama_vision import OllamaVisionLLM
 import mlflow
 
 EXPERIMENT_NAME = 'Multimodal Retrieval'
@@ -45,7 +45,9 @@ app.mount("/images", StaticFiles(directory=IMAGES_DIR), name="images")
 
 #llm = get_ollama_llm()
 
-llm = get_bedrock_llm()
+#llm = get_bedrock_llm()
+model_name = 'gemma3:12b'
+llm = OllamaVisionLLM(model_name=model_name)
 embed_model = RemoteEmbedding(f"http://localhost:8020")
 
 Settings.llm = llm
