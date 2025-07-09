@@ -22,17 +22,16 @@ from src.agent_list import get_function_agent
 from src.react_agent import get_react_agent
 '''
 from src.components import get_ollama_llm, get_mongo_db_client, get_chroma_db_client
-
 from src.embedding_client import RemoteEmbedding
 from src.image_retriever import ImageRetriever
 from src.image_store import ImageStore
 from src.mlflow_utils import MLflowLogs
+from src.aws_bedrock import get_bedrock_llm
 
 import mlflow
 
 EXPERIMENT_NAME = 'Multimodal Retrieval'
 IMAGES_FOLDER = os.path.join(PROJECT_ROOT, 'local_only', 'data', 'images')
-
 
 mlflow.set_tracking_uri(MLFLOW_LOGS_FOLDER)
 mlflow.set_experiment(EXPERIMENT_NAME)
@@ -46,7 +45,7 @@ app.mount("/images", StaticFiles(directory=IMAGES_DIR), name="images")
 
 #llm = get_ollama_llm()
 
-llm = None
+llm = get_bedrock_llm()
 embed_model = RemoteEmbedding(f"http://localhost:8020")
 
 Settings.llm = llm
@@ -69,7 +68,7 @@ app.state.mongo_db_client = mongo_db_client
 app.state.vec_db_client = vec_db_client
 app.state.experiment_name = EXPERIMENT_NAME
 app.state.mlflow_handler = mlflow_handler
-
+app.state.llm = llm
 app.state.image_manager = ImageStore(IMAGES_FOLDER)
 
 app.include_router(ui_routes.router)
@@ -78,6 +77,7 @@ app.include_router(api_routes.router)
 app.include_router(db_routes.router) 
 app.include_router(vec_db_routes.router) 
 app.include_router(mlflow_routes.router) 
+
 
 
 if __name__ == "__main__":

@@ -32,6 +32,13 @@ def root(request: Request):
         "chat_endpoint": "/chat_bot"
     })
 
+@router.get("/chat", response_class=HTMLResponse)
+def root(request: Request):
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "chat_endpoint": "/chat"
+    })
+
 @router.get("/retriever", response_class=HTMLResponse)
 def root(request: Request):
     return templates.TemplateResponse("index.html", {
@@ -56,7 +63,6 @@ def root(request: Request):
     return templates.TemplateResponse("mlflow.html", {
         "request": request,
     })
-
 
 @router.get("/chat_history", response_class=HTMLResponse)
 def chat_history(request: Request):
