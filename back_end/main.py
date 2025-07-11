@@ -80,8 +80,6 @@ app.include_router(db_routes.router)
 app.include_router(vec_db_routes.router) 
 app.include_router(mlflow_routes.router) 
 
-
-
 if __name__ == "__main__":
     import uvicorn
     app_path = Path(__file__).resolve().with_suffix('').name  # gets filename without .py

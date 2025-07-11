@@ -34,7 +34,10 @@ class OllamaVisionLLM(CustomLLM):
         }
         if image_source:
             #encoded_image = self._encode_image(image_source)
-            payload['images'] = [image_source]
+            if isinstance(image_source, list):
+                payload['images'] = image_source
+            else:
+                payload['images'] = [image_source]
 
         headers = {"Content-Type": "application/json"}
         response = requests.post(

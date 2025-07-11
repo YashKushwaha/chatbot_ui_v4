@@ -18,7 +18,6 @@ async def stream_response(response):
         yield chunk.delta
         await asyncio.sleep(0.1)
 
-
 '''
 @router.post("/chat_bot")
 async def chat_bot(request: Request, message: str = Form(...), image: UploadFile = File(None)):
@@ -35,7 +34,7 @@ async def vision(request: Request, message: str = Form(...), image: UploadFile =
     response_stream = message
     llm = request.app.state.llm
     if image:
-        image.file.seek(0)  # ✅ ensure we're at the start
+        image.file.seek(0)
         image_bytes = image.file.read()
         image_for_llm = base64.b64encode(image_bytes).decode("utf-8")
         response_stream = llm.stream_complete(message, image_for_llm)
@@ -43,8 +42,6 @@ async def vision(request: Request, message: str = Form(...), image: UploadFile =
         #pass
         response_stream = llm.stream_complete(message)
     return StreamingResponse(stream_response(response_stream), media_type="text/plain")
-    #return StreamingResponse(message, media_type="text/plain")
-
 
 @router.post("/retriever")
 async def retriever(request: Request, message: str = Form(...), image: UploadFile = File(None)):
