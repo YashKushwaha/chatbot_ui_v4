@@ -68,3 +68,4 @@ To test the retrieval pipeline end to end, it has been connected to front end an
 - A video demo of image reasoning using `gemma` can be seen on the follwing link
 
  [![Watch Demo](https://img.youtube.com/vi/ZQtXqu9Fboo/0.jpg) ](https://youtu.be/ZQtXqu9Fboo)
+
