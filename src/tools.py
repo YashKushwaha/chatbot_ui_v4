@@ -1,4 +1,4 @@
-from llama_index.core.tools.types import BaseTool, ToolMetadata
+from llama_index.core.tools.types import BaseTool, ToolMetadata, ToolOutput
 from pydantic import BaseModel
 
 from src.ollama_vision import get_image
@@ -67,11 +67,11 @@ class ImageRetrieverTool(BaseTool):
 class ImageListEvaluatorTool(BaseTool):
     args_schema = ImageList
     
-    def __init__(self, image_retriever_fn=None, vision_llm=None, template=None):
-        self.image_retriever_fn = image_retriever_fn 
+    def __init__(self, vision_llm=None, template=None):
+        #self.image_retriever_fn = image_retriever_fn 
         self.vision_llm = vision_llm 
         self.template = template
-        
+
     @property
     def metadata(self) -> ToolMetadata:
         tool_metadata = ToolMetadata(
@@ -87,7 +87,7 @@ class ImageListEvaluatorTool(BaseTool):
     def __call__(self, query:QueryInput, image_list: ImageList) -> str:
         image_string, base64_images = prepare_images_for_prompt(image_list)
         prompt = self.template.render(user_query = query, images = image_string)    
-        response_gen = self.vision_llm.complete(prompt=prompt, image_source=base64_images)
+        response_gen = self.vision_llm.stream_complete(prompt=prompt, image_source=base64_images)
         return response_gen
 
 def prepare_images_for_prompt(images):
@@ -119,36 +119,20 @@ if __name__ == '__main__':
     image_retriever = ImageRetriever(embed_model=embed_model, vec_store=vec_store, similarity_top_k=4)
     tool = ImageRetrieverTool(image_retriever = image_retriever)
     
-    query = "Man walking"
+    query = "Poeple praying in church"
 
     results = tool(query) 
     images = [node.text for node in results]
     print(images)
 
-    from src.ollama_vision import  OllamaVisionLLM
-    
+    from src.ollama_vision import  OllamaVisionLLM    
     vision_llm = OllamaVisionLLM(model_name = 'gemma3:12b')
 
-    image_string, base64_images = prepare_images_for_prompt(images)
+    evaluator = ImageListEvaluatorTool(vision_llm=vision_llm, template = template)
 
-    prompt = template.render(user_query = query, images = image_string)    
-    print('prompt prepared')
-    #print(prompt)
-
-
-    response_gen = vision_llm.stream_complete(prompt=prompt, image_source=base64_images)
-
-
-    #response_gen = vision_llm.stream_complete(prompt=prompt, image_source=base64_images)
-    print('response_gen prepared')
-
+    response = evaluator(query=query, image_list=images)
+    
     final_response = ""
-    for chunk in response_gen:
+    for chunk in response:
         print(chunk.delta, end="", flush=True)  # Print tokens as they stream
         final_response += chunk.delta
-    
-
-    prompt = 'Hi, How are you ?'
-    #response_gen = vision_llm.complete(prompt=prompt)#, image_source=base64_images)
-    #print(response_gen.text)
-    print('DONE')
