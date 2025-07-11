@@ -22,7 +22,6 @@ class ImageRetriever(BaseRetriever):
 
         vec_store_query = VectorStoreQuery(query_embedding = embedding[0], similarity_top_k = 5)
         results = self.vec_store.query(vec_store_query) 
-        print(results.__dict__)
 
         return [
         NodeWithScore(node=n, score=s)

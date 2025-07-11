@@ -37,7 +37,7 @@ prompt_template = """
 You are a helpful assistant. Users may ask you to generate images based on a text description.
 You will be provided with images retrieved from the knowledge base and you have to decide which image best aligns with user query.
 
-Images will be provided in the follwoing format:
+Images will be provided in the following format:
 <image_1> : name of the file e.g. 12345.jpg
 <image_2> : 67891011.jpg
 ....
