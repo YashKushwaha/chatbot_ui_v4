@@ -13,7 +13,7 @@ import asyncio
 
 from pathlib import Path
 
-from back_end.config_settings import PROJECT_ROOT, STATIC_DIR, IMAGES_DIR
+from back_end.config_settings import PROJECT_ROOT, STATIC_DIR, IMAGES_DIR, IMAGES_FOLDER
 from constants import MLFLOW_LOGS_FOLDER
 
 from back_end.routes import ui_routes, debug_routes, api_routes, db_routes, vec_db_routes, mlflow_routes
@@ -31,7 +31,7 @@ from src.ollama_vision import OllamaVisionLLM
 import mlflow
 
 EXPERIMENT_NAME = 'Multimodal Retrieval'
-IMAGES_FOLDER = os.path.join(PROJECT_ROOT, 'local_only', 'data', 'images')
+
 
 mlflow.set_tracking_uri(MLFLOW_LOGS_FOLDER)
 mlflow.set_experiment(EXPERIMENT_NAME)
@@ -83,4 +83,4 @@ app.include_router(mlflow_routes.router)
 if __name__ == "__main__":
     import uvicorn
     app_path = Path(__file__).resolve().with_suffix('').name  # gets filename without .py
-    uvicorn.run(f"{app_path}:app", host="localhost", port=8000, reload=True)
+    uvicorn.run(f"{app_path}:app", host="localhost", port=8000, reload=True, workers = 4)

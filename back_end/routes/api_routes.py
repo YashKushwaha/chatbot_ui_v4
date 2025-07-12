@@ -2,6 +2,10 @@ from fastapi import Form, File, UploadFile
 from fastapi.responses import StreamingResponse, JSONResponse
 from fastapi import APIRouter, Request
 from llama_index.core.vector_stores import VectorStoreQuery
+
+from src.templates import image_evaluator_template
+from src.tools import prepare_images_for_prompt
+
 import asyncio
 import base64
 
@@ -56,3 +60,21 @@ async def retriever(request: Request, message: str = Form(...), image: UploadFil
         for node in results.nodes
     )
     return StreamingResponse(response_stream, media_type="text/plain")
+
+@router.post("/multi_modal_rag")
+def multi_modal_rag(request: Request, message: str = Form(...), image: UploadFile = File(None)):
+    retriever =  request.app.state.retriever
+    results = retriever.retrieve(message) 
+    response_stream = '\n\n'.join(
+        f"![image](/get_image?filename={node.text})"
+        for node in results
+    )
+    image_list = [node.text for node in results]
+    print(image_list)
+    image_string, base64_images = prepare_images_for_prompt(image_list)
+
+    print(image_string)
+    prompt = image_evaluator_template.render(user_query = message, images = image_string)
+    response_gen = request.app.state.llm.stream_complete(prompt=prompt, image_source=base64_images)
+    return StreamingResponse(stream_response(response_gen), media_type="text/plain")
+

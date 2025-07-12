@@ -96,7 +96,7 @@ def prepare_images_for_prompt(images):
     for num, image_name in enumerate(images, start=1):
         to_add = f'<image_{num}> : {image_name}'
         image_string.append(to_add)
-        url = f'http://localhost:8000/get_image?filename={image_name}'
+        url = f'http://localhost:8040/get_image?filename={image_name}'
         url_list.append(url)
 
     image_string = '\n'.join(image_string)

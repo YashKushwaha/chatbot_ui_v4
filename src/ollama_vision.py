@@ -20,8 +20,8 @@ class OllamaVisionLLM(CustomLLM):
 
     def metadata(self) -> LLMMetadata:
         return LLMMetadata(
-            context_window=4096,
-            num_output=1024,
+            context_window=512,
+            num_output=512,
             is_chat_model=False,
             is_function_calling_model=False,
         )

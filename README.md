@@ -69,3 +69,17 @@ To test the retrieval pipeline end to end, it has been connected to front end an
 
  [![Watch Demo](https://img.youtube.com/vi/ZQtXqu9Fboo/0.jpg) ](https://youtu.be/ZQtXqu9Fboo)
 
+ ### Full multi modal RAG pipeline
+
+ After testing the retrieval and generation components individually, I tested both components together. 
+ Experiment:
+ - User query sent to vector DB for retrieval, top 5 results returned
+ - Images loaded from image database based on the filenames returned from retrieval, converted to base64 strings
+ - User query loaded into prompt, base64 images added to the payload. The prompt asks the LLM to compare images with user query and return the most relevant image
+ - LLM returns the name of most of most relevant image, now the llm response can be parsed and image can be rendered separately in the front end
+
+For further refining of the code, I converted the retrieval and generation components as Tools, the pipeline worked but for some reason inference is now happening on CPU instead of GPU. On further reading, I came to know that retrieval is best candidate for converting to a tool however LLM calls should not be done in Tools.
+
+I also built Workflow architecture but still the inference is happening on CPU. This is not an issue when using a remote/cloud LLM service (openai, mistral etc) but it got me curious why this has started to happen. Maybe it's a Ollama / WSL issue.
+
+While my simple end to end script is working, I need to deep dive into agent architecture, ochestration and workflow etc to make the LLM calls more robust. 

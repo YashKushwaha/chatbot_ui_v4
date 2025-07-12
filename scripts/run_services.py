@@ -4,6 +4,7 @@ import json
 import os
 import chromadb
 
+from src.components import IMAGE_SERVER_PORT
 
 CHROMA_DB_PORT = "8010"
 EMBEDDING_SERVER_PORT = "8020"
@@ -33,6 +34,16 @@ def get_embedding_server_commands():
     ]
     return commands
 
+def get_image_store_server_commands():
+    commands = [
+    "uvicorn",
+    "scripts.images_server:app",
+    "--host", "127.0.0.1",
+    "--port", f"{IMAGE_SERVER_PORT}"
+    ]
+    return commands
+
+
 def get_mlflow_server_commands():
     commands = [
         "mlflow",
@@ -47,6 +58,7 @@ if __name__ == '__main__':
 
     embed_proc = subprocess.Popen(get_embedding_server_commands())    
     chroma_proc = subprocess.Popen(get_chroma_db_commands())
+    image_store_proc = subprocess.Popen(get_image_store_server_commands())
     mlflow_proc = subprocess.Popen(get_mlflow_server_commands())
 
     # Keep main script alive
@@ -57,4 +69,5 @@ if __name__ == '__main__':
         print("Shutting down servers...")
         embed_proc.terminate()
         chroma_proc.terminate()
+        image_store_proc.terminate()
         mlflow_proc.terminate()

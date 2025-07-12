@@ -15,4 +15,6 @@ templates = Jinja2Templates(directory=TEMPLATES_DIR)
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(IMAGES_DIR, exist_ok=True)
 
+IMAGES_FOLDER = os.path.join(PROJECT_ROOT, 'local_only', 'data', 'images')
+
 

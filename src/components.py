@@ -3,6 +3,9 @@ from pymongo import MongoClient
 
 from llama_index.llms.ollama import Ollama
 
+CHROMA_DB_PORT = 8010
+IMAGE_SERVER_PORT = 8040
+
 def get_ollama_llm():
     model = "qwen3:14b"
     context_window = 1000
@@ -14,8 +17,6 @@ def get_ollama_llm():
         context_window=context_window,
     )
     return llm
-
-CHROMA_DB_PORT = 8010
 
 def get_chroma_db_client():
     client = chromadb.HttpClient(
