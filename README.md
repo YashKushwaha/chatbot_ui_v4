@@ -1,3 +1,5 @@
+# Multi Modal RAG Pipeline
+
 ### Overview
 
 This is my 4th project exploring the use of llama index for LLM applications. In the project, I have implemented multi modal RAG.
